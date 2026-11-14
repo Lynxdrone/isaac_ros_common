@@ -74,8 +74,8 @@ CameraDropNode::CameraDropNode(const rclcpp::NodeOptions & options)
   sub_options.use_intra_process_comm = rclcpp::IntraProcessSetting::Enable;
 
   // Initialize common subscribers and publishers for all modes
-  image_sub_1_.subscribe(this, "image_1", input_qos, sub_options);
-  camera_info_sub_1_.subscribe(this, "camera_info_1", input_qos, sub_options);
+  image_sub_1_.subscribe(this, "image_1", input_qos.get_rmw_qos_profile(), sub_options);
+  camera_info_sub_1_.subscribe(this, "camera_info_1", input_qos.get_rmw_qos_profile(), sub_options);
   image_pub_1_ = create_publisher<sensor_msgs::msg::Image>(
     "image_1_drop", output_qos, pub_options);
   camera_info_pub_1_ = create_publisher<
@@ -93,8 +93,8 @@ CameraDropNode::CameraDropNode(const rclcpp::NodeOptions & options)
   } else if (mode_ == modeToStringMap.at(CameraDropMode::Stereo)) {
     // Mode 1: Camera + CameraInfo + Camera + CameraInfo (stereo)
     // Initialize second mono subscribers and publishers
-    image_sub_2_.subscribe(this, "image_2", input_qos, sub_options);
-    camera_info_sub_2_.subscribe(this, "camera_info_2", input_qos, sub_options);
+    image_sub_2_.subscribe(this, "image_2", input_qos.get_rmw_qos_profile(), sub_options);
+    camera_info_sub_2_.subscribe(this, "camera_info_2", input_qos.get_rmw_qos_profile(), sub_options);
     image_pub_2_ = create_publisher<sensor_msgs::msg::Image>(
       "image_2_drop", output_qos, pub_options);
     camera_info_pub_2_ = create_publisher<
@@ -109,7 +109,7 @@ CameraDropNode::CameraDropNode(const rclcpp::NodeOptions & options)
   } else if (mode_ == modeToStringMap.at(CameraDropMode::MonoDepth)) {
     // Mode 2: Camera + CameraInfo + Depth (mono+depth)
     // Initialize depth subscriber and publisher
-    depth_sub_.subscribe(this, "depth_1", input_qos, sub_options);
+    depth_sub_.subscribe(this, "depth_1", input_qos.get_rmw_qos_profile(), sub_options);
     depth_pub_ = create_publisher<sensor_msgs::msg::Image>(
       "depth_1_drop", output_qos, pub_options);
     // Initialize sync policy
